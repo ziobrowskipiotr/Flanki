@@ -49,7 +49,7 @@ class SayHello(App):
 
     def callback(self, instance):
         # change label text to "Hello + user name!"
-        self.greeting.text = "Hello " + self.user.text + "!"
+        self.greeting.text = "SIema " + self.user.text + "!"
 
 # run Say Hello App Calss
 if __name__ == "__main__":
