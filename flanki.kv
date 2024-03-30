@@ -1,13 +1,19 @@
-<GradientBoxLayout@BoxLayout>:
-    canvas.before:
-        Color:
-            rgba: 1, 1, 1, 1  # Ustaw tło na biało, efektywne tło zostanie ustawione w Pythonie
-        Rectangle:
-            size: self.size
-            pos: self.pos
-            # Usuwamy linię z 'texture:', ponieważ tekstura jest ustawiana w Pythonie
-
+<AnimatedBackground@Video>:
 FloatLayout:
+    Video:
+        source: 'galactic.mp4'
+        state: 'play'
+        options: {'eos': 'loop'}
+        allow_stretch: True
+        keep_ratio: False
+        size_hint: 1, 1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+    Image:
+        source: 'logo2.png'
+        size_hint: 0.5, 0.5
+        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+
     Button:
         text: 'Przycisk 1'
         size_hint: 0.6, 0.1  # Przyciski będą zajmowały 60% szerokości i 15% wysokości ekranu
@@ -15,7 +21,7 @@ FloatLayout:
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
-                rgba: 1, 0, 0, 1
+                rgba: 173/255, 216/255, 230/255, 1
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
@@ -24,11 +30,11 @@ FloatLayout:
     Button:
         text: 'Przycisk 2'
         size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.3}  # Ustawienie przycisku 2 dokładnie na środku ekranu
+        pos_hint: {'center_x': 0.5, 'center_y': 0.2935}  # Ustawienie przycisku 2 dokładnie na środku ekranu
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
-                rgba: 0, 1, 0, 1
+                rgba: 255/255, 105/255, 180/255, 1
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
@@ -37,12 +43,13 @@ FloatLayout:
     Button:
         text: 'Przycisk 3'
         size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.2}  # Ustawienie przycisku 3 nieco niżej na ekranie
+        pos_hint: {'center_x': 0.5, 'center_y': 0.187}  # Ustawienie przycisku 3 nieco niżej na ekranie
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
-                rgba: 0, 0, 1, 1
+                rgba: 147/255, 112/255, 219/255, 1
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
                 radius: [self.height / 2.2, ]
+
