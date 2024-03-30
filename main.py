@@ -1,42 +1,34 @@
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.button import Button
-from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle
+from kivy.lang import Builder
+from kivy.graphics.texture import Texture
+from kivy.graphics import Rectangle, Color
+from kivy.uix.boxlayout import BoxLayout
+import numpy as np
 
-
-class BackgroundLayout(FloatLayout):
+class GradientBoxLayout(BoxLayout):
     def __init__(self, **kwargs):
-        super(BackgroundLayout, self).__init__(**kwargs)
+        super().__init__(**kwargs)
+        self.bind(size=self.update_canvas, pos=self.update_canvas)
+
+    def update_canvas(self, *args):
+        self.canvas.before.clear()
         with self.canvas.before:
-            self.bg_color = Color(0.1, 0.2, 0.3, 1)  # Kolor tła
-            self.rect = Rectangle(size=(self.width, self.height), pos=self.pos)
+            Color(1, 1, 1, 1)
+            texture = self.create_gradient_texture([0, 1, 0, 1], [1, 0, 0, 1])
+            Rectangle(size=self.size, pos=self.pos, texture=texture)
 
-        # Aby tło aktualizowało się razem z rozmiarem okna
-        self.bind(size=self._update_bg, pos=self._update_bg)
+    def create_gradient_texture(self, start_color, end_color, resolution=(1024, 1)):
+        data = np.zeros((resolution[0], 4), dtype=np.float32)
+        for i in range(resolution[0]):
+            current_color = np.array(start_color) * (1 - i / resolution[0]) + np.array(end_color) * (i / resolution[0])
+            data[i] = current_color
+        texture = Texture.create(size=resolution, colorfmt='rgba')
+        texture.blit_buffer(data.flatten().tobytes(), colorfmt='rgba', bufferfmt='float')
+        return texture
 
-    def _update_bg(self, *args):
-        self.rect.size = self.size
-        self.rect.pos = self.pos
-
-
-class FlashcardApp(App):
+class MainApp(App):
     def build(self):
-        self.title = 'Flashcard App'
-        window = BackgroundLayout()
+        return Builder.load_file('flanki.kv')
 
-        # Dodawanie widgetów do BackgroundLayout
-        logo = Image(source="logo.png", size_hint=(None, None), size=(400, 200), pos_hint={'center_x': 0.5, 'top': 1})
-        window.add_widget(logo)
-
-        button_texts = ["Moje fiszki", "Utwórz fiszki", "Importuj fiszki", "Statystyki"]
-        for i, text in enumerate(button_texts, start=1):
-            btn = Button(text=text, size_hint=(None, None), size=(200, 50),
-                         pos_hint={'center_x': 0.5, 'center_y': 0.6 - i * 0.1})
-            window.add_widget(btn)
-
-        return window
-
-
-if __name__ == "__main__":
-    FlashcardApp().run()
+if __name__ == '__main__':
+    MainApp().run()
