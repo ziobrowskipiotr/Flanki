@@ -1,4 +1,4 @@
-<AnimatedBackground@Video>:
+<Video@Image@Button>:
 FloatLayout:
     Video:
         source: 'galactic.mp4'
@@ -14,10 +14,24 @@ FloatLayout:
         size_hint: 0.5, 0.5
         pos_hint: {'center_x': 0.5, 'center_y': 0.8}
 
-    Button:
-        text: 'Przycisk 1'
+    MyButton:
+        text: 'My flashcards'
         size_hint: 0.6, 0.1  # Przyciski będą zajmowały 60% szerokości i 15% wysokości ekranu
         pos_hint: {'center_x': 0.5, 'center_y': 0.4}  # Ustawienie przycisku 1 nieco wyżej na ekranie
+        background_color: 0, 0, 0, 0
+        canvas.before:
+            Color:
+                rgba: 156/255, 235/255, 189/255, 1
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [self.height / 2.2, ]  # Zaokrąglenie wyniesie połowę wysokości przycisku
+        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+
+    MyButton:
+        text: 'Create flashcards'
+        size_hint: 0.6, 0.1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.2935}  # Ustawienie przycisku 2 dokładnie na środku ekranu
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
@@ -25,12 +39,13 @@ FloatLayout:
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
-                radius: [self.height / 2.2, ]  # Zaokrąglenie wyniesie połowę wysokości przycisku
+                radius: [self.height / 2.2, ]
+        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
 
-    Button:
-        text: 'Przycisk 2'
+    MyButton:
+        text: 'Import flashcards'
         size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.2935}  # Ustawienie przycisku 2 dokładnie na środku ekranu
+        pos_hint: {'center_x': 0.5, 'center_y': 0.187}  # Ustawienie przycisku 3 nieco niżej na ekranie
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
@@ -39,11 +54,12 @@ FloatLayout:
                 size: self.size
                 pos: self.pos
                 radius: [self.height / 2.2, ]
+        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
 
-    Button:
-        text: 'Przycisk 3'
+    MyButton:
+        text: 'Statistics'
         size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.187}  # Ustawienie przycisku 3 nieco niżej na ekranie
+        pos_hint: {'center_x': 0.5, 'center_y': 0.0805}  # Ustawienie przycisku 4 nieco niżej na ekranie
         background_color: 0, 0, 0, 0
         canvas.before:
             Color:
@@ -52,4 +68,4 @@ FloatLayout:
                 size: self.size
                 pos: self.pos
                 radius: [self.height / 2.2, ]
-
+        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
