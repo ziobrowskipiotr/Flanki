@@ -1,4 +1,4 @@
-<Video@Image@Button>:
+<FloatLayout>:
 FloatLayout:
     Video:
         source: 'galactic.mp4'
@@ -69,3 +69,30 @@ FloatLayout:
                 pos: self.pos
                 radius: [self.height / 2.2, ]
         on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+
+    Button:
+        id: btn
+        text: 'Settings'
+        size_hint: 0.2,  None
+        pos_hint: {'center_x': 0.1, 'center_y': 0.975}  # Ustawienie przycisku 4 nieco niżej na ekranie
+        background_color: 1, 0, 1, 1
+        on_release: dropdown.open(self)
+
+    DropDown:
+        id: dropdown
+        on_select: btn.text = '{}'.format(args[1])
+
+        Button:
+            text: 'First item'
+            background_color: 1, 0, 1, 1
+            size_hint_y: None
+            on_release: dropdown.select('First item')
+
+        Button:
+            text: 'Second item'
+            background_color: 1, 0, 1, 1
+            size_hint_y: None
+            on_release: dropdown.select('Second item')
+
+    Widget:
+        on_parent: dropdown.dismiss()
