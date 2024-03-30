@@ -1,5 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
+from MyButton import MyButton
+
 
 class MainApp(App):
     def __init__(self, **kwargs):
