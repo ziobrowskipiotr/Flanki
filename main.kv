@@ -1,98 +1,125 @@
-<FloatLayout>:
-FloatLayout:
-    Video:
-        source: 'galactic.mp4'
-        state: 'play'
-        options: {'eos': 'loop'}
-        allow_stretch: True
-        keep_ratio: False
-        size_hint: 1, 1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+ScreenManager:
+    id: screen_manager
 
-    Image:
-        source: 'logo2.png'
-        size_hint: 0.5, 0.5
-        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+    MainScreen:
+        name: 'main'
+        id: main_screen
 
-    MyButton:
-        text: 'My flashcards'
-        size_hint: 0.6, 0.1  # Przyciski będą zajmowały 60% szerokości i 15% wysokości ekranu
-        pos_hint: {'center_x': 0.5, 'center_y': 0.4}  # Ustawienie przycisku 1 nieco wyżej na ekranie
-        background_color: 0, 0, 0, 0
-        canvas.before:
-            Color:
-                rgba: 156/255, 235/255, 189/255, 1
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: [self.height / 2.2, ]  # Zaokrąglenie wyniesie połowę wysokości przycisku
-        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+    MojeKontoScreen:
+        name: 'moje_konto'
+        id: moje_konto_screen
 
-    MyButton:
-        text: 'Create flashcards'
-        size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.2935}  # Ustawienie przycisku 2 dokładnie na środku ekranu
-        background_color: 0, 0, 0, 0
-        canvas.before:
-            Color:
-                rgba: 173/255, 216/255, 230/255, 1
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: [self.height / 2.2, ]
-        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+<MainScreen>:
+    FloatLayout:
+        Video:
+            source: 'galactic.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-    MyButton:
-        text: 'Import flashcards'
-        size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.187}  # Ustawienie przycisku 3 nieco niżej na ekranie
-        background_color: 0, 0, 0, 0
-        canvas.before:
-            Color:
-                rgba: 255/255, 105/255, 180/255, 1
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: [self.height / 2.2, ]
-        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.5, 0.5
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
 
-    MyButton:
-        text: 'Statistics'
-        size_hint: 0.6, 0.1
-        pos_hint: {'center_x': 0.5, 'center_y': 0.0805}  # Ustawienie przycisku 4 nieco niżej na ekranie
-        background_color: 0, 0, 0, 0
-        canvas.before:
-            Color:
-                rgba: 147/255, 112/255, 219/255, 1
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: [self.height / 2.2, ]
-        on_release: self.change_color() # Wywołanie funkcji change_color() po kliknięciu
+        MyButton:
+            text: 'My flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 156/255, 235/255, 189/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('my_flashcards')
 
-    Button:
-        id: btn
-        text: 'Settings'
-        size_hint: 0.2,  None
-        pos_hint: {'center_x': 0.1, 'center_y': 0.975}  # Ustawienie przycisku 4 nieco niżej na ekranie
-        background_color: 1, 0, 1, 1
-        on_release: dropdown.open(self)
+        MyButton:
+            text: 'Create flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2935}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 173/255, 216/255, 230/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('create_flashcards')
 
-    DropDown:
-        id: dropdown
-        on_select: btn.text = '{}'.format(args[1])
+        MyButton:
+            text: 'Import flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.187}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 255/255, 105/255, 180/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('import_flashcards')
 
-        Button:
-            text: 'First item'
-            background_color: 1, 0, 1, 1
-            size_hint_y: None
-            on_release: dropdown.select('First item')
+        MyButton:
+            text: 'Statistics'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.0805}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 147/255, 112/255, 219/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('statistics')
 
         Button:
-            text: 'Second item'
+            id: btn
+            text: 'Menu'
+            size_hint: 0.2, None
+            pos_hint: {'x': 0, 'top': 1}
             background_color: 1, 0, 1, 1
-            size_hint_y: None
-            on_release: dropdown.select('Second item')
+            on_release: dropdown.open(self)
 
-    Widget:
-        on_parent: dropdown.dismiss()
+        DropDown:
+            id: dropdown
+            Button:
+                text: 'Moje Konto'
+                background_color: 1, 0, 1, 1
+                size_hint_y: None
+                on_release:
+                    app.change_screen('moje_konto')
+                    dropdown.dismiss()
+            Button:
+                text: 'Odśwież'
+                background_color: 1, 0, 1, 1
+                size_hint_y: None
+                on_release:
+                    app.change_screen('refresh')
+                    dropdown.dismiss()
+            Button:
+                text: 'Pomoc'
+                background_color: 1, 0, 1, 1
+                size_hint_y: None
+                on_release:
+                    app.change_screen('help')
+                    dropdown.dismiss()
+            Button:
+                text: 'Wyloguj'
+                background_color: 1, 0, 1, 1
+                size_hint_y: None
+                on_release:
+                    app.change_screen('logout')
+                    dropdown.dismiss()
+
+        Widget:
+            on_parent: dropdown.dismiss()
+
