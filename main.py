@@ -1,3 +1,5 @@
+import webbrowser
+
 from kivy.app import App
 from kivy.lang import Builder
 # *** Important importing!!! ***
@@ -25,6 +27,9 @@ class MainApp(App):
     def change_screen(self, screen_name):
         if screen_name in self.root.screen_names:
             self.root.current = screen_name
+
+    def open_help_window(self):
+        webbrowser.open("https://www.youtube.com/watch?v=6gNpSuE01qE&t=317s")
 
 
 if __name__ == '__main__':

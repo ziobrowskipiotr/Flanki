@@ -158,7 +158,7 @@ ScreenManager:
                         pos: self.pos
                         radius: [self.height / 4, ]
                 on_release:
-                    app.change_screen('help')
+                    app.open_help_window()
                     dropdown.dismiss()
             Button:
                 text: 'Wyloguj'
