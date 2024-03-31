@@ -1,0 +1,20 @@
+<ImportFlashcardsScreen>:
+    FloatLayout:
+        Button:
+            id: btn
+            text: 'Home'
+            size_hint: 0.2, 0.1
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('main')
+        Label:
+            text: 'Tu będzie ekran ImportFlashcardsScreen'
+            size_hint: 0.6, 0.2
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}

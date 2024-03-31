@@ -9,6 +9,22 @@ ScreenManager:
         name: 'moje_konto'
         id: moje_konto_screen
 
+    MyFlashcardsScreen:
+        name: 'my_flashcards'
+        id: my_flashcards_screen
+
+    MyFlashcardsScreen:
+        name: 'create_flashcards'
+        id: create_flashcards_screen
+
+    ImportFlashcardsScreen:
+        name: 'import_flashcards'
+        id: import_flashcards_screen
+
+    StatisticsScreen:
+        name: 'statistics'
+        id: statistics_screen
+
 <MainScreen>:
     FloatLayout:
         Video:
@@ -85,41 +101,80 @@ ScreenManager:
             id: btn
             text: 'Menu'
             size_hint: 0.2, None
+            height: dp(30)
             pos_hint: {'x': 0, 'top': 1}
-            background_color: 1, 0, 1, 1
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_release: dropdown.open(self)
 
         DropDown:
             id: dropdown
             Button:
                 text: 'Moje Konto'
-                background_color: 1, 0, 1, 1
-                size_hint_y: None
+                background_color: 0, 0, 0, 0
+                size_hint: 0.2, None
+                height: dp(30)
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
                 on_release:
                     app.change_screen('moje_konto')
                     dropdown.dismiss()
             Button:
                 text: 'Odśwież'
-                background_color: 1, 0, 1, 1
-                size_hint_y: None
+                size_hint: 0.2, None
+                height: dp(30)
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
                 on_release:
                     app.change_screen('refresh')
                     dropdown.dismiss()
             Button:
                 text: 'Pomoc'
-                background_color: 1, 0, 1, 1
-                size_hint_y: None
+                size_hint: 0.2, None
+                height: dp(30)
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
                 on_release:
                     app.change_screen('help')
                     dropdown.dismiss()
             Button:
                 text: 'Wyloguj'
-                background_color: 1, 0, 1, 1
-                size_hint_y: None
+                size_hint: 0.2, None
+                height: dp(30)
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
                 on_release:
                     app.change_screen('logout')
                     dropdown.dismiss()
 
         Widget:
             on_parent: dropdown.dismiss()
-
