@@ -10,6 +10,8 @@ from MojeKontoScreen import MojeKontoScreen
 from MyFlashcardsScreen import MyFlashcardsScreen
 from StatisticsScreen import StatisticsScreen
 from MainScreen import MainScreen
+
+
 # *** end ***
 
 
@@ -31,11 +33,8 @@ class MainApp(App):
     def open_help_window(self):
         webbrowser.open("https://www.youtube.com/watch?v=6gNpSuE01qE&t=317s")
 
-
-    def restart_app(self):
-        self.stop()
-        new_app_instance = MainApp()
-        new_app_instance.run()
+    def quit_app(self):
+        MainApp.stop(self)
 
 
 if __name__ == '__main__':

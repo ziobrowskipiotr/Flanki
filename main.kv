@@ -131,21 +131,6 @@ ScreenManager:
                     app.change_screen('moje_konto')
                     dropdown.dismiss()
             Button:
-                text: 'Odśwież'
-                size_hint: 0.2, None
-                height: dp(30)
-                background_color: 0, 0, 0, 0
-                canvas.before:
-                    Color:
-                        rgba: 0.4, 0.4, 0.4, 1
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 4, ]
-                on_release:
-                    app.restart_app()
-                    dropdown.dismiss()
-            Button:
                 text: 'Pomoc'
                 size_hint: 0.2, None
                 height: dp(30)
@@ -174,6 +159,22 @@ ScreenManager:
                         radius: [self.height / 4, ]
                 on_release:
                     app.change_screen('logout')
+                    dropdown.dismiss()
+
+            Button:
+                text: 'Wyjdź'
+                size_hint: 0.2, None
+                height: dp(30)
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
+                on_release:
+                    app.quit_app()
                     dropdown.dismiss()
 
         Widget:
