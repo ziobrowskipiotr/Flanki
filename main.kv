@@ -28,7 +28,7 @@ ScreenManager:
 <MainScreen>:
     FloatLayout:
         Video:
-            source: 'galactic.mp4'
+            source: 'galactic.avi'
             state: 'play'
             options: {'eos': 'loop'}
             allow_stretch: True
@@ -158,7 +158,7 @@ ScreenManager:
                         pos: self.pos
                         radius: [self.height / 4, ]
                 on_release:
-                    app.change_screen('logout')
+                    app.change_screen('login')
                     dropdown.dismiss()
 
             Button:

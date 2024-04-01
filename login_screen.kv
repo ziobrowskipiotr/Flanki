@@ -1,0 +1,23 @@
+<LoginScreen>:
+    on_pre_enter:
+        self.ids.login.text = ''
+        self.ids.password.text = ''
+    FloatLayout:
+        TextInput:
+            id: login
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            hint_text: 'Login'
+
+        TextInput:
+            id: password
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            hint_text: 'Password'
+            password: True
+
+        Button:
+            text: 'Login'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_release: app.verify_credentials(login.text, password.text)
