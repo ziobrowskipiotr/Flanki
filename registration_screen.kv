@@ -1,0 +1,36 @@
+<RegistrationScreen>:
+    on_pre_enter:
+        self.ids.first_name.text = ''
+        self.ids.last_name.text = ''
+        self.ids.email.text = ''
+        self.ids.phone_number.text = ''
+    FloatLayout:
+        TextInput:
+            id: first_name
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+            hint_text: 'Imię'
+
+        TextInput:
+            id: last_name
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
+            hint_text: 'Nazwisko'
+
+        TextInput:
+            id: email
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            hint_text: 'Email'
+
+        TextInput:
+            id: phone_number
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            hint_text: 'Numer telefonu'
+
+        Button:
+            text: 'Dalej'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+            on_release: app.register(first_name.text, last_name.text, email.text, phone_number.text)

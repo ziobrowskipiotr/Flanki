@@ -1,6 +1,7 @@
 import webbrowser
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 from MyButton import MyButton
 from CreateFlashcardsScreen import CreateFlashcardsScreen
@@ -12,9 +13,16 @@ from MainScreen import MainScreen
 class LoginScreen(Screen):
     pass
 
+class RegistrationScreen(Screen):
+    pass
+
+class SetLogin(Screen):
+    pass
 class MainApp(App):
     def build(self):
         Builder.load_file('login_screen.kv')
+        Builder.load_file('registration_screen.kv')
+        Builder.load_file('set_login.kv')
         Builder.load_file('MojeKontoScreen.kv')
         Builder.load_file('MyFlashcardsScreen.kv')
         Builder.load_file('CreateFlashcardsScreen.kv')
@@ -23,6 +31,8 @@ class MainApp(App):
 
         sm = ScreenManager()
         sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(RegistrationScreen(name='registration'))
+        sm.add_widget(SetLogin(name='set_login'))
         sm.add_widget(MainScreen(name='main'))
         sm.add_widget(MojeKontoScreen(name='moje_konto'))
         sm.add_widget(MyFlashcardsScreen(name='my_flashcards'))
@@ -39,6 +49,18 @@ class MainApp(App):
     def verify_credentials(self, login, password):
         if login and password:
             self.change_screen('main')
+        else:
+            print("Wszystkie pola muszą być wypełnione!")
+
+    def register(self, first_name, last_name, email, phone_number):
+        if all([first_name, last_name, email, phone_number]):
+            self.change_screen('set_login')
+        else:
+            print("Wszystkie pola muszą być wypełnione!")
+
+    def setlogpass(self, new_login, new_password):
+        if all([new_login, new_password]):
+            self.change_screen('login')
         else:
             print("Wszystkie pola muszą być wypełnione!")
 

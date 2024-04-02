@@ -1,0 +1,23 @@
+<SetLogin>:
+    on_pre_enter:
+        self.ids.new_login.text = ''
+        self.ids.new_password.text = ''
+    FloatLayout:
+        TextInput:
+            id: new_login
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            hint_text: 'Podaj login'
+
+        TextInput:
+            id: new_password
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            hint_text: 'Podaj hasło'
+            password: True
+
+        Button:
+            text: 'Ustaw login i hasło'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_release: app.setlogpass(new_login.text, new_password.text)
