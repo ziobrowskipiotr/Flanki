@@ -1,4 +1,5 @@
 import webbrowser
+import re
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
@@ -10,6 +11,7 @@ from MojeKontoScreen import MojeKontoScreen
 from MyFlashcardsScreen import MyFlashcardsScreen
 from StatisticsScreen import StatisticsScreen
 from MainScreen import MainScreen
+from cognito_auth import login_user, register_user
 class LoginScreen(Screen):
     pass
 
@@ -47,20 +49,40 @@ class MainApp(App):
             self.root.current = screen_name
 
     def verify_credentials(self, login, password):
-        if login and password:
-            self.change_screen('main')
+        result = login_user(login, password)
+        if result["success"]:
+            auth_result = result["response"].get('AuthenticationResult')
+            if auth_result and auth_result.get('AccessToken'):
+                self.change_screen('main')
+                print("Logowanie udane!")
+            else:
+                print("Logowanie udane, ale brak tokenu dostępu. Skontaktuj się z administratorem.")
         else:
-            print("Wszystkie pola muszą być wypełnione!")
+            print(f"Logowanie nieudane! Błąd: {result['error']}")
 
     def register(self, first_name, last_name, email, phone_number):
-        if all([first_name, last_name, email, phone_number]):
-            self.change_screen('set_login')
-        else:
+        self.temp_email = email
+        email_pattern = re.compile(r"[^@]+@[^@]+\.[^@]+")
+        phone_pattern = re.compile(r"^\d{9}$")
+
+        if not all([first_name, last_name, email, phone_number]):
             print("Wszystkie pola muszą być wypełnione!")
+        elif not email_pattern.match(email):
+            print("Nieprawidłowy format adresu e-mail!")
+        elif not phone_pattern.match(phone_number):
+            print("Numer telefonu musi składać się z 9 cyfr!")
+        else:
+            self.change_screen('set_login')
 
     def setlogpass(self, new_login, new_password):
-        if all([new_login, new_password]):
-            self.change_screen('login')
+        email = self.temp_email
+        if all([new_login, new_password, email]):
+            response = register_user(new_login, new_password, email)
+            if response.get('success', False):
+                self.change_screen('login')
+                print("Rejestracja zakończona sukcesem! Możesz się zalogować.")
+            else:
+                print("Nie można zarejestrować użytkownika: ", response.get('error', 'Nieznany błąd'))
         else:
             print("Wszystkie pola muszą być wypełnione!")
 
