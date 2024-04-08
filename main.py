@@ -2,8 +2,7 @@ import webbrowser
 import re
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import ScreenManager
 from MyButton import MyButton
 from CreateFlashcardsScreen import CreateFlashcardsScreen
 from ImportFlashcardsScreen import ImportFlashcardsScreen
