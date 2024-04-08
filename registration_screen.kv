@@ -5,32 +5,62 @@
         self.ids.email.text = ''
         self.ids.phone_number.text = ''
     FloatLayout:
+        Video:
+            source: 'dym.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.568, 0.568
+            pos_hint: {'center_x': 0.5, 'center_y': 0.825}
+
+        Button:
+            id: btn
+            text: 'Back'
+            size_hint: 0.2, None
+            height: dp(30)
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('login')
+
         TextInput:
             id: first_name
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.75}
-            hint_text: 'Imię'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.52}
+            hint_text: 'Name'
 
         TextInput:
             id: last_name
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.65}
-            hint_text: 'Nazwisko'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.42}
+            hint_text: 'Surname'
 
         TextInput:
             id: email
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.32}
             hint_text: 'Email'
 
         TextInput:
             id: phone_number
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
-            hint_text: 'Numer telefonu'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+            hint_text: 'Phone number'
 
         Button:
-            text: 'Dalej'
+            text: 'Next'
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.12}
             on_release: app.register(first_name.text, last_name.text, email.text, phone_number.text)

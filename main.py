@@ -12,14 +12,11 @@ from MyFlashcardsScreen import MyFlashcardsScreen
 from StatisticsScreen import StatisticsScreen
 from MainScreen import MainScreen
 from cognito_auth import login_user, register_user
-class LoginScreen(Screen):
-    pass
+from LoginScreen import LoginScreen
+from RegistrationScreen import RegistrationScreen
+from SetLogin import SetLogin
 
-class RegistrationScreen(Screen):
-    pass
 
-class SetLogin(Screen):
-    pass
 class MainApp(App):
     def build(self):
         Builder.load_file('login_screen.kv')
@@ -91,6 +88,7 @@ class MainApp(App):
 
     def quit_app(self):
         self.stop()
+
 
 if __name__ == '__main__':
     MainApp().run()

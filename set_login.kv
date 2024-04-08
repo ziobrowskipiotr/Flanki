@@ -3,21 +3,51 @@
         self.ids.new_login.text = ''
         self.ids.new_password.text = ''
     FloatLayout:
+        Video:
+            source: 'dym.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.568, 0.568
+            pos_hint: {'center_x': 0.5, 'center_y': 0.825}
+
+        Button:
+            id: btn
+            text: 'Back'
+            size_hint: 0.2, None
+            height: dp(30)
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('registration')
+
         TextInput:
             id: new_login
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
-            hint_text: 'Podaj login'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            hint_text: 'Enter your login'
 
         TextInput:
             id: new_password
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            hint_text: 'Podaj hasło'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.35}
+            hint_text: 'Enter the password'
             password: True
 
         Button:
-            text: 'Ustaw login i hasło'
+            text: 'Set login and password'
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.25}
             on_release: app.setlogpass(new_login.text, new_password.text)
