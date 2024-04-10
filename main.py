@@ -1,170 +1,198 @@
+import os
 import webbrowser
-
+import re
+from urllib.parse import quote
+import boto3
+from botocore.exceptions import NoCredentialsError, ClientError
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.button import Button
-from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle
-from kivy.uix.dropdown import DropDown
-from kivy.uix.popup import Popup
-from kivy.uix.boxlayout import BoxLayout
-from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager
+from openpyxl.workbook import Workbook
 
-class BackgroundLayout(FloatLayout):
-    def __init__(self, **kwargs):
-        super(BackgroundLayout, self).__init__(**kwargs)
-        with self.canvas.before:
-            self.bg_color = Color(0.1, 0.2, 0.3, 1)  # Kolor tła
-            self.rect = Rectangle(size=(self.width, self.height), pos=self.pos)
-
-        self.bind(size=self._update_bg, pos=self._update_bg)
-
-    def _update_bg(self, *args):
-        self.rect.size = self.size
-        self.rect.pos = self.pos
+from MyButton import MyButton
+from CreateFlashcardsScreen import CreateFlashcardsScreen
+from ImportFlashcardsScreen import ImportFlashcardsScreen
+from MojeKontoScreen import MojeKontoScreen
+from MyFlashcardsScreen import MyFlashcardsScreen
+from StatisticsScreen import StatisticsScreen
+from MainScreen import MainScreen
+from cognito_auth import login_user, register_user
+from LoginScreen import LoginScreen
+from RegistrationScreen import RegistrationScreen
+from SetLogin import SetLogin
+from S3_access_key import S3_key as Key
+from CreateFlashcards_First import CreateFlashcards_First
 
 
-class MyFlashcardsWindow(Popup):
-    def __init__(self, **kwargs):
-        super(MyFlashcardsWindow, self).__init__(**kwargs)
+class MainApp(App):
+    def __init__(self):
+        super().__init__()
+        self.word = None
+        self.login = None
+        self.subject = "Message to the developer"
+        self.emails = "piotrziobrow@student.agh.edu.pl,jkrzyszczuk@student.agh.edu.pl"
+        self.temp_email = None
+        self.selected_file = None  # Dodano atrybut do przechowywania ścieżki do wybranego pliku
+        self.words = []
 
-        self.title = "Moje fiszki"
-
-        layout = BoxLayout(orientation='vertical')
-        self.content = layout
-
-        back_button = Button(text='Powrót', size_hint=(None, None), size=(100, 50))
-        back_button.bind(on_release=self.dismiss)
-        layout.add_widget(back_button)
-    pass
-
-
-class CreateFlashcardsWindow(Popup):
-    def __init__(self, **kwargs):
-        super(CreateFlashcardsWindow, self).__init__(**kwargs)
-
-        self.title = "Utwórz fiszki"
-
-        layout = BoxLayout(orientation='vertical')
-        self.content = layout
-
-        back_button = Button(text='Powrót', size_hint=(None, None), size=(100, 50))
-        back_button.bind(on_release=self.dismiss)
-        layout.add_widget(back_button)
-    pass
-
-
-class ImportFlashcardsWindow(Popup):
-    def __init__(self, **kwargs):
-        super(ImportFlashcardsWindow, self).__init__(**kwargs)
-
-        self.title = "Importuj fiszki"
-
-        layout = BoxLayout(orientation='vertical')
-        self.content = layout
-
-        back_button = Button(text='Powrót', size_hint=(None, None), size=(100, 50))
-        back_button.bind(on_release=self.dismiss)
-        layout.add_widget(back_button)
-    pass
-
-
-class StatisticsWindow(Popup):
-    def __init__(self, **kwargs):
-        super(StatisticsWindow, self).__init__(**kwargs)
-
-        self.title = "Statystyki"
-
-        layout = BoxLayout(orientation='vertical')
-        self.content = layout
-
-        back_button = Button(text='Powrót', size_hint=(None, None), size=(100, 50))
-        back_button.bind(on_release=self.dismiss)
-        layout.add_widget(back_button)
-    pass
-
-
-class MyAccountWindow(Popup):
-    def __init__(self, **kwargs):
-        super(MyAccountWindow, self).__init__(**kwargs)
-
-        self.title = "Moje konto"
-
-        layout = BoxLayout(orientation='vertical')
-        self.content = layout
-
-        back_button = Button(text='Powrót', size_hint=(None, None), size=(100, 50))
-        back_button.bind(on_release=self.dismiss)
-        layout.add_widget(back_button)
-    pass
-
-class FlashcardApp(App):
     def build(self):
-        self.title = 'Flashcard App'
-        window = BackgroundLayout()
+        Builder.load_file('LoginScreen.kv')
+        Builder.load_file('RegistrationScreen.kv')
+        Builder.load_file('SetLogin.kv')
+        Builder.load_file('MojeKontoScreen.kv')
+        Builder.load_file('MyFlashcardsScreen.kv')
+        Builder.load_file('CreateFlashcardsScreen.kv')
+        Builder.load_file('ImportFlashcardsScreen.kv')
+        Builder.load_file('StatisticsScreen.kv')
+        Builder.load_file('CreateFlashcards_First.kv')
 
-        logo = Image(source="logo.png", size_hint=(None, None), size=(400, 200), pos_hint={'center_x': 0.5, 'top': 1})
-        window.add_widget(logo)
+        sm = ScreenManager()
+        sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(RegistrationScreen(name='registration'))
+        sm.add_widget(SetLogin(name='set_login'))
+        sm.add_widget(MainScreen(name='main'))
+        sm.add_widget(MojeKontoScreen(name='moje_konto'))
+        sm.add_widget(MyFlashcardsScreen(name='my_flashcards'))
+        sm.add_widget(CreateFlashcardsScreen(name='create_flashcards'))
+        sm.add_widget(ImportFlashcardsScreen(name='import_flashcards'))
+        sm.add_widget(StatisticsScreen(name='statistics'))
+        sm.add_widget(CreateFlashcards_First(name='create_flashcards_first'))
 
-        button_texts = ["Moje fiszki", "Utwórz fiszki", "Importuj fiszki", "Statystyki"]
-        button_actions = [self.open_my_flashcards_window, self.open_create_flashcards_window,
-                          self.open_import_flashcards_window, self.open_statistics_window]
-        for i, (text, action) in enumerate(zip(button_texts, button_actions), start=1):
-            btn = Button(text=text, size_hint=(None, None), size=(200, 50),
-                         pos_hint={'center_x': 0.5, 'center_y': 0.6 - i * 0.1})
-            btn.bind(on_release=action)
-            window.add_widget(btn)
+        return sm
 
-        menu_button = Button(text='Menu', size_hint=(None, None), size=(100, 50),
-                             pos_hint={'left': 1, 'top': 1})
-        menu_button.bind(on_release=self.show_menu)
-        window.add_widget(menu_button)
+    def change_screen(self, screen_name):
+        if screen_name in self.root.screen_names:
+            self.root.current = screen_name
 
-        self.menu = DropDown()
-        options = ["Pomoc", "Moje konto", "Odśwież"]
-        options_actions = [self.open_help_window, self.open_myaccount_window, self.open_refresh_window]
-        for option, action in zip(options, options_actions):
-            btn = Button(text=option, size_hint_y=None, height=40)
-            btn.bind(on_release=lambda btn, action=action: action())
-            self.menu.add_widget(btn)
+    def verify_credentials(self, login, password):
+        self.login = login
+        result = login_user(login, password)
+        if result["success"]:
+            auth_result = result["response"].get('AuthenticationResult')
+            if auth_result and auth_result.get('AccessToken'):
+                self.change_screen('main')
+                print("Logowanie udane!")
+            else:
+                print("Logowanie udane, ale brak tokenu dostępu. Skontaktuj się z administratorem.")
+        else:
+            print(f"Logowanie nieudane! Błąd: {result['error']}")
 
-        return window
+    def register(self, first_name, last_name, email, phone_number):
+        self.temp_email = email
+        email_pattern = re.compile(r"[^@]+@[^@]+\.[^@]+")
+        phone_pattern = re.compile(r"^\d{9}$")
 
-    def show_menu(self, instance):
-        self.menu.open(instance)
+        if not all([first_name, last_name, email, phone_number]):
+            print("Wszystkie pola muszą być wypełnione!")
+        elif not email_pattern.match(email):
+            print("Nieprawidłowy format adresu e-mail!")
+        elif not phone_pattern.match(phone_number):
+            print("Numer telefonu musi składać się z 9 cyfr!")
+        else:
+            self.change_screen('set_login')
 
-    def open_my_flashcards_window(self, instance):
-        my_flashcards_window = MyFlashcardsWindow()
-        my_flashcards_window.open()
-
-    def open_create_flashcards_window(self, instance):
-        create_flashcards_window = CreateFlashcardsWindow()
-        create_flashcards_window.open()
-
-    def open_import_flashcards_window(self, instance):
-        import_flashcards_window = ImportFlashcardsWindow()
-        import_flashcards_window.open()
-
-    def open_statistics_window(self, instance):
-        statistics_window = StatisticsWindow()
-        statistics_window.open()
+    def setlogpass(self, new_login, new_password):
+        email = self.temp_email
+        if all([new_login, new_password, email]):
+            response = register_user(new_login, new_password, email)
+            if response.get('success', False):
+                self.change_screen('login')
+                print("Rejestracja zakończona sukcesem! Możesz się zalogować.")
+            else:
+                print("Nie można zarejestrować użytkownika: ", response.get('error', 'Nieznany błąd'))
+        else:
+            print("Wszystkie pola muszą być wypełnione!")
 
     def open_help_window(self):
-        webbrowser.open("https://www.youtube.com/watch?v=6gNpSuE01qE&t=317s")
+        url = f"mailto:{self.emails}?subject={quote(self.subject)}"
+        webbrowser.open(url)
 
-    def open_refresh_window(self):
-        Clock.schedule_once(self.restart_app)
-
-    def restart_app(self, dt):
+    def quit_app(self):
         self.stop()
-        new_app_instance = FlashcardApp()
-        new_app_instance.run()
 
-    def open_myaccount_window(self):
-        myaccount_window = MyAccountWindow()
-        myaccount_window.open()
+    def upload_file_to_s3(self, file_path, user_login):
+        bucket_name = 'fank'
+        if self.word is None:
+            if len(file_path.split("/")[-1]) <= len(file_path.split("\\")[-1]):
+                file_name = file_path.split("/")[-1]
+            else:
+                file_name = file_path.split("\\")[-1]
+        else:
+            file_name = self.word+".xlsx"
+
+        print(file_name)
+        print(file_name)
+        print(file_name)
+        print(file_name)
+        print(file_name)
+        print(file_name)
+        print(file_name)
+
+        object_name = f'{user_login}/{file_name}'
+
+        s3 = boto3.client(
+            's3',
+            aws_access_key_id=Key.aws_access_key_id,
+            aws_secret_access_key=Key.aws_secret_access_key,
+            region_name=Key.region_name
+        )
+        try:
+            # Spróbuj pobrać metadane obiektu, aby sprawdzić, czy plik już istnieje
+            s3.head_object(Bucket=bucket_name, Key=object_name)
+            print(f"Plik '{file_name}' już istnieje w buckecie '{bucket_name}'.")
+        except ClientError as e:
+            # Jeśli obiekt nie istnieje, boto3 zgłosi wyjątek ClientError. Sprawdzamy, czy to dlatego, że obiekt nie istnieje
+            error_code = e.response['Error']['Code']
+            if error_code == '404':
+                # Plik nie istnieje, możemy bezpiecznie go przesłać
+                try:
+                    s3.upload_file(file_path, bucket_name, object_name)
+                    print("Plik został przesłany!")
+                except FileNotFoundError:
+                    print("Plik nie został znaleziony.")
+                except NoCredentialsError:
+                    print("Błąd poświadczeń AWS.")
+            else:
+                # Inny błąd - coś poszło nie tak
+                print(f"Nieoczekiwany błąd: {e.response['Error']['Message']}")
+        if self.word is not None:
+            os.remove(file_name)
+
+    def selected(self, selection):
+        self.selected_file = selection[0] if selection else None
+
+    def upload_selected_file(self):
+        if self.selected_file:
+            user_login = self.login  # Tu dodaj logikę uzyskania loginu użytkownika
+            self.upload_file_to_s3(self.selected_file, user_login)
+        else:
+            print("Nie wybrano pliku.")
+
+    def save_words(self, word1, word2):
+        self.words.append((word1, word2))
+        print("Zapisano słówka:", word1, word2)
+
+    def save_word(self, word):
+        self.word = word
+        print("Zapisano słowo:", self.word)
+
+    def generate_excel(self):
+        if not self.words:
+            print("Brak danych do zapisu")
+            return
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = self.word
+
+        for word_pair in self.words:
+            ws.append(word_pair)
+
+        filename = self.word+".xlsx"
+        wb.save(filename)
+        print(f"Plik Excel '{filename}' został wygenerowany.")
+        self.upload_file_to_s3(filename, self.login)
 
 
-
-if __name__ == "__main__":
-    FlashcardApp().run()
+if __name__ == '__main__':
+    MainApp().run()

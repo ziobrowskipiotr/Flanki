@@ -1,0 +1,55 @@
+<CreateFlashcardsScreen>:
+    FloatLayout:
+        Video:
+            id: video
+            source: 'galactic.avi'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        Button:
+            id: btn
+            text: 'Back'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('create_flashcards_first')
+
+        BoxLayout:
+            orientation: 'vertical'
+            size: root.width, root.height
+            padding: 10
+            spacing: 10
+
+            TextInput:
+                id: word1
+                hint_text: "Wpisz słowo 1"
+                size_hint_y: None
+                height: 40
+
+            TextInput:
+                id: word2
+                hint_text: "Wpisz słowo 2"
+                size_hint_y: None
+                height: 40
+
+            Button:
+                text: "Zapisz"
+                size_hint_y: None
+                height: 40
+                on_press: app.save_words(word1.text, word2.text)
+
+            Button:
+                text: "Generuj Excel"
+                size_hint_y: None
+                height: 40
+                on_press: app.generate_excel()

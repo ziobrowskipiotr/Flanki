@@ -1,0 +1,201 @@
+#:import Window kivy.core.window.Window
+ScreenManager:
+    id: screen_manager
+
+    MainScreen:
+        name: 'main'
+        id: main_screen
+
+    MojeKontoScreen:
+        name: 'moje_konto'
+        id: moje_konto_screen
+
+    MyFlashcardsScreen:
+        name: 'my_flashcards'
+        id: my_flashcards_screen
+
+    CreateFlashcardsScreen:
+        name: 'create_flashcards'
+        id: create_flashcards_screen
+
+    ImportFlashcardsScreen:
+        name: 'import_flashcards'
+        id: import_flashcards_screen
+
+    StatisticsScreen:
+        name: 'statistics'
+        id: statistics_screen
+
+<MainScreen>:
+    FloatLayout:
+        Video:
+            source: 'galactic.avi'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.5, 0.5
+            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+
+        MyButton:
+            text: 'My flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 156/255, 235/255, 189/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('my_flashcards')
+
+        MyButton:
+            text: 'Create flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2935}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 173/255, 216/255, 230/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('create_flashcards_first')
+
+        MyButton:
+            text: 'Import flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.187}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 255/255, 105/255, 180/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('import_flashcards')
+
+        MyButton:
+            text: 'Edit Flashcards'
+            size_hint: 0.6, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.0805}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 147/255, 112/255, 219/255, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 2.2, ]
+            on_release: app.change_screen('statistics')
+
+        Button:
+            text: 'Menu'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: dropdown.open(self)
+
+        DropDown:
+            id: dropdown
+            max_height: Window.height * 0.27
+
+            Widget:
+                size_hint_y: None
+                height: Window.height * 0.005
+
+            Button:
+                text: 'Account'
+                background_color: 0, 0, 0, 0
+                size_hint: 0.28, None
+                height: Window.height * 0.08
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
+                on_release:
+                    app.change_screen('moje_konto')
+                    dropdown.dismiss()
+
+            Widget:
+                size_hint_y: None
+                height: Window.height * 0.005
+
+            Button:
+                text: 'Help'
+                size_hint: 0.28, None
+                height: Window.height * 0.08
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
+                on_release:
+                    app.open_help_window()
+                    dropdown.dismiss()
+
+            Widget:
+                size_hint_y: None
+                height: Window.height * 0.005
+
+            Button:
+                text: 'Log Out'
+                size_hint: 0.28, None
+                height: Window.height * 0.08
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
+                on_release:
+                    app.change_screen('login')
+                    dropdown.dismiss()
+
+            Widget:
+                size_hint_y: None
+                height: Window.height * 0.005
+
+            Button:
+                text: 'Exit'
+                size_hint: 0.28, None
+                height: Window.height * 0.08
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 0.4, 0.4, 0.4, 1
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 4, ]
+                on_release:
+                    app.quit_app()
+                    dropdown.dismiss()
+
+        Widget:
+            on_parent: dropdown.dismiss()

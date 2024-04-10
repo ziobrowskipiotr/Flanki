@@ -1,0 +1,43 @@
+<LoginScreen>:
+    on_pre_enter:
+        self.ids.login.text = ''
+        self.ids.password.text = ''
+    FloatLayout:
+        Video:
+            source: 'dym.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.568, 0.568
+            pos_hint: {'center_x': 0.5, 'center_y': 0.825}
+
+        TextInput:
+            id: login
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            hint_text: 'Login'
+
+        TextInput:
+            id: password
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            hint_text: 'Password'
+            password: True
+
+        Button:
+            text: 'Login'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            on_release: app.verify_credentials(login.text, password.text)
+
+        Button:
+            text: 'Register'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+            on_release: app.change_screen('registration')
