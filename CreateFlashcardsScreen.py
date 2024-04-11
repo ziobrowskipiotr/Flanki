@@ -1,3 +1,6 @@
+import os
+
+from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 
@@ -14,3 +17,8 @@ class CreateFlashcardsScreen(Screen):
 
     def stop_video(self):
         self.ids.video.state = 'stop'
+
+    def create(self):
+        app = App.get_running_app()  # Uzyskaj obecnie działającą instancję aplikacji
+        app.generate_excel()
+        os.remove(app.file_name)

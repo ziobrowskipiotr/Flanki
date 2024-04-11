@@ -6,9 +6,9 @@ import boto3
 from botocore.exceptions import NoCredentialsError, ClientError
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivymd.app import MDApp
 from openpyxl.workbook import Workbook
-
 from MyButton import MyButton
 from CreateFlashcardsScreen import CreateFlashcardsScreen
 from ImportFlashcardsScreen import ImportFlashcardsScreen
@@ -22,11 +22,13 @@ from RegistrationScreen import RegistrationScreen
 from SetLogin import SetLogin
 from S3_access_key import S3_key as Key
 from CreateFlashcards_First import CreateFlashcards_First
+from kivymd.uix.filemanager import MDFileManager
 
 
-class MainApp(App):
+class MainApp(MDApp):
     def __init__(self):
         super().__init__()
+        self.file_name = None
         self.word = None
         self.login = None
         self.subject = "Message to the developer"
@@ -34,8 +36,14 @@ class MainApp(App):
         self.temp_email = None
         self.selected_file = None  # Dodano atrybut do przechowywania ścieżki do wybranego pliku
         self.words = []
+        self.screenm = ScreenManager()
+        self.fscreen = ImportFlashcardsScreen()
+        screen = Screen(name="ImportFlashcardsScreen")
+        screen.add_widget(self.fscreen)
+        self.screenm.add_widget(screen)
 
     def build(self):
+
         Builder.load_file('LoginScreen.kv')
         Builder.load_file('RegistrationScreen.kv')
         Builder.load_file('SetLogin.kv')
@@ -110,25 +118,20 @@ class MainApp(App):
     def quit_app(self):
         self.stop()
 
-    def upload_file_to_s3(self, file_path, user_login):
+    def upload_file_to_s3(self, file_path, user_login, word = None):
         bucket_name = 'fank'
+        self.word = word
         if self.word is None:
             if len(file_path.split("/")[-1]) <= len(file_path.split("\\")[-1]):
-                file_name = file_path.split("/")[-1]
+                self.file_name = file_path.split("/")[-1]
             else:
-                file_name = file_path.split("\\")[-1]
+                self.file_name = file_path.split("\\")[-1]
+        elif self.word.endswith(".xlsx"):
+            self.file_name = self.word
         else:
-            file_name = self.word+".xlsx"
+            self.file_name = self.word+".xlsx"
 
-        print(file_name)
-        print(file_name)
-        print(file_name)
-        print(file_name)
-        print(file_name)
-        print(file_name)
-        print(file_name)
-
-        object_name = f'{user_login}/{file_name}'
+        object_name = f'{user_login}/{self.file_name}'
 
         s3 = boto3.client(
             's3',
@@ -139,7 +142,9 @@ class MainApp(App):
         try:
             # Spróbuj pobrać metadane obiektu, aby sprawdzić, czy plik już istnieje
             s3.head_object(Bucket=bucket_name, Key=object_name)
-            print(f"Plik '{file_name}' już istnieje w buckecie '{bucket_name}'.")
+            print(f"Plik '{self.file_name}' już istnieje w buckecie '{bucket_name}'.")
+            info_label = self.root.get_screen('import_flashcards').ids.info_label
+            info_label.text = f"Plik\n'{self.file_name}'\njuż istnieje"
         except ClientError as e:
             # Jeśli obiekt nie istnieje, boto3 zgłosi wyjątek ClientError. Sprawdzamy, czy to dlatego, że obiekt nie istnieje
             error_code = e.response['Error']['Code']
@@ -147,19 +152,18 @@ class MainApp(App):
                 # Plik nie istnieje, możemy bezpiecznie go przesłać
                 try:
                     s3.upload_file(file_path, bucket_name, object_name)
-                    print("Plik został przesłany!")
+                    info_label = self.root.get_screen('import_flashcards').ids.info_label
+                    info_label.text = f"Plik został przesłany."
                 except FileNotFoundError:
-                    print("Plik nie został znaleziony.")
+                    info_label = self.root.get_screen('import_flashcards').ids.info_label
+                    info_label.text = f"Plik nie został znaleziony."
                 except NoCredentialsError:
-                    print("Błąd poświadczeń AWS.")
+                    info_label = self.root.get_screen('import_flashcards').ids.info_label
+                    info_label.text = f"Błąd poświadczeń AWS."
             else:
                 # Inny błąd - coś poszło nie tak
-                print(f"Nieoczekiwany błąd: {e.response['Error']['Message']}")
-        if self.word is not None:
-            os.remove(file_name)
-
-    def selected(self, selection):
-        self.selected_file = selection[0] if selection else None
+                info_label = self.root.get_screen('import_flashcards').ids.info_label
+                info_label.text = "Nieoczekiwany błąd"
 
     def upload_selected_file(self):
         if self.selected_file:
@@ -173,8 +177,14 @@ class MainApp(App):
         print("Zapisano słówka:", word1, word2)
 
     def save_word(self, word):
-        self.word = word
-        print("Zapisano słowo:", self.word)
+        if not word:  # Sprawdza czy wprowadzone słowo jest puste
+            # Ustawia komunikat na etykiecie w bieżącym ekranie
+            info_label = self.root.get_screen('create_flashcards_first').ids.info_label
+            info_label.text = "Nie podano nazwy pliku."
+        else:
+            self.word = word
+            self.change_screen('create_flashcards')  # Przechodzi do nowego ekranu tylko jeśli słowo nie jest puste
+            print("Zapisano słowo:", self.word)
 
     def generate_excel(self):
         if not self.words:

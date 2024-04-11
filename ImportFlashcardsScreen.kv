@@ -1,6 +1,20 @@
 #:import Window kivy.core.window.Window
 <ImportFlashcardsScreen>:
     FloatLayout:
+
+        #Image:
+		#    id: bck
+		#    source: ''
+		#    size: root.size
+
+		Label:
+            id: bck
+            text: ''  # Początkowo pusty, zostanie ustawiony gdy plik zostanie wybrany
+            size_hint_y: None
+            height: '48dp'
+            valign: 'middle'
+            halign: 'center'
+
         Video:
             id: video
             source: 'galactic.avi'
@@ -9,6 +23,16 @@
             keep_ratio: False
             size_hint: 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Label:
+            id: info_label
+            size_hint_y: None
+            height: Window.height * 0.2
+            pos_hint: {'center_x': 0.5, 'center_y': 0.68}
+            text: 'Choose file'  # Początkowo pusty, zostanie ustawiony gdy będzie trzeba wyświetlić komunikat
+            font_size: min(Window.height * 0.08, Window.width * 0.08)
+            bold: True  # Pogrubia tekst
+
         Button:
             text: 'Home'
             size_hint: 0.28, None
@@ -24,17 +48,19 @@
                     radius: [self.height / 4, ]
             on_release: app.change_screen('main')
 
-        FileChooserIconView:
-            id: filechooser
-            on_selection: app.selected(filechooser.selection)
-            filters: ['*.xlsx', '*.xls']
-            icon_size: dp(18), dp(18)  # Ustawienie rozmiaru ikony (szerokość, wysokość)
-            size_hint: 0.9, 0.8  # Zmniejszenie rozmiaru widoku, aby nie zajmował całego ekranu
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}  # Wyśrodkowanie w pionie i poziomie
-            view_mode: 'icon'  # Upewnienie się, że jest w trybie ikonowym
-
         Button:
-            text: 'Importuj'
+            text: 'Import'
             size_hint: 0.2, 0.1
-            pos_hint: {'center_x': 0.5, 'y': 0.01}
-            on_press: app.upload_selected_file()
+            pos_hint: {'center_x': 0.5, 'center_y': 0.38}
+            size_hint: 0.58, None
+            height: Window.height * 0.1
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.25, 0.4, 0.8, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_press:
+                root.select_file()
