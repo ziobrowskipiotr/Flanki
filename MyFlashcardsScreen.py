@@ -7,6 +7,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from openpyxl import load_workbook
 from io import BytesIO
+from S3_access_key import S3_key as Key
 from kivy.uix.screenmanager import Screen
 class MyFlashcardsScreen(Screen):
     def on_pre_enter(self):

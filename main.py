@@ -28,6 +28,7 @@ from cognito_auth import login_user, register_user
 from LoginScreen import LoginScreen
 from RegistrationScreen import RegistrationScreen
 from SetLogin import SetLogin
+from S3_access_key import S3_key as Key
 from FlashcardCreationScreen import FlashcardCreationScreen
 
 class FlashcardsCreationScreen(Screen):
