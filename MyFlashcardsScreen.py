@@ -30,7 +30,7 @@ class MyFlashcardsScreen(Screen):
         self.ids.folders_box.clear_widgets()
         if folders:
             for folder in folders:
-                folder_name = folder.get('Prefix').strip(prefix).strip('/')
+                folder_name = folder.get('Prefix')[len(prefix):-1]
                 btn = Button(text=folder_name, size_hint_y=None, height=40)
                 btn.bind(on_release=lambda x, folder=folder_name: self.show_flashcards(folder))
                 self.ids.folders_box.add_widget(btn)

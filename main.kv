@@ -50,14 +50,18 @@ ScreenManager:
             font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
-                    rgba: 156/255, 235/255, 189/255, 1
+                    rgba: self.bgc_my
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 2.2, ]
-            on_release: app.change_screen('my_flashcards')
+            on_press: self.bgc_my = self.background_down_color
+            on_release:
+                self.bgc_my = [156/255, 235/255, 189/255, 1]
+                app.change_screen('my_flashcards')
 
-        Button:
+
+        MyButton:
             text: 'Create flashcards'
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.2935}
@@ -65,12 +69,15 @@ ScreenManager:
             font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
-                    rgba: 173/255, 216/255, 230/255, 1
+                    rgba: self.bgc_create
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 2.2, ]
-            on_release: app.change_screen('create_flashcards')
+            on_press: self.bgc_create = self.background_down_color
+            on_release:
+                self.bgc_create = [173/255, 216/255, 230/255, 1]
+                app.change_screen('create_flashcards')
 
         MyButton:
             text: 'Import flashcards'
@@ -80,27 +87,33 @@ ScreenManager:
             font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
-                    rgba: 255/255, 105/255, 180/255, 1
+                    rgba: self.bgc_import
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 2.2, ]
-            on_release: app.change_screen('import_flashcards')
+            on_press: self.bgc_import = self.background_down_color
+            on_release:
+                self.bgc_import = [255/255, 105/255, 180/255, 1]
+                app.change_screen('import_flashcards')
 
         MyButton:
-            text: 'Edit Flashcards'
+            text: 'Edit flashcards'
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.0805}
             background_color: 0, 0, 0, 0
             font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
-                    rgba: 147/255, 112/255, 219/255, 1
+                    rgba: self.bgc_edit
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 2.2, ]
-            on_release: app.change_screen('statistics')
+            on_press: self.bgc_edit = self.background_down_color
+            on_release:
+                self.bgc_edit = [147/255, 112/255, 219/255, 1]
+                app.change_screen('statistics')
 
         BoxLayout:
             id: top_bar

@@ -2,6 +2,7 @@ import os
 import webbrowser
 import re
 import pandas as pd
+from kivy.animation import Animation
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -249,6 +250,7 @@ class MainApp(MDApp):
         wb.save(filename)
         print(f"Plik Excel '{filename}' został wygenerowany.")
         self.upload_file_to_s3(filename, self.login)
+
 
 if __name__ == '__main__':
     MainApp().run()
