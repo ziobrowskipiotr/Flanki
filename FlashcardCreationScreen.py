@@ -2,7 +2,6 @@ import pandas as pd
 import s3fs
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
-from S3_access_key import S3_key as Key
 
 class FlashcardCreationScreen(Screen):
     def save_flashcard(self):

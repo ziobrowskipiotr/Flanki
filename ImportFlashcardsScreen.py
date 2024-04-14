@@ -4,7 +4,6 @@ from kivy.uix.widget import Widget
 import pandas as pd
 import os
 import s3fs
-from S3_access_key import S3_key as Key
 
 class ImportFlashcardsScreen(Screen, Widget):
     def on_pre_enter(self):
