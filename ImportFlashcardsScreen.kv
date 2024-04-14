@@ -1,5 +1,20 @@
+#:import Window kivy.core.window.Window
 <ImportFlashcardsScreen>:
     FloatLayout:
+
+        #Image:
+		#    id: bck
+		#    source: ''
+		#    size: root.size
+
+		Label:
+            id: bck
+            text: ''  # Początkowo pusty, zostanie ustawiony gdy plik zostanie wybrany
+            size_hint_y: None
+            height: '48dp'
+            valign: 'middle'
+            halign: 'center'
+
         Video:
             id: video
             source: 'galactic.avi'
@@ -8,11 +23,20 @@
             keep_ratio: False
             size_hint: 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Label:
+            id: info_label
+            size_hint_y: None
+            height: Window.height * 0.2
+            pos_hint: {'center_x': 0.5, 'center_y': 0.68}
+            text: 'Choose file'  # Początkowo pusty, zostanie ustawiony gdy będzie trzeba wyświetlić komunikat
+            font_size: min(Window.height * 0.08, Window.width * 0.08)
+            bold: True  # Pogrubia tekst
+
         Button:
-            id: btn
             text: 'Home'
-            size_hint: 0.2, None
-            height: dp(30)
+            size_hint: 0.28, None
+            height: Window.height * 0.08
             pos_hint: {'x': 0, 'top': 1}
             background_color: 0, 0, 0, 0
             canvas.before:
@@ -23,7 +47,20 @@
                     pos: self.pos
                     radius: [self.height / 4, ]
             on_release: app.change_screen('main')
-        Label:
-            text: 'Tu będzie ekran ImportFlashcardsScreen'
-            size_hint: 0.6, 0.2
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Button:
+            text: 'Import'
+            size_hint: 0.2, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.38}
+            size_hint: 0.58, None
+            height: Window.height * 0.1
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.25, 0.4, 0.8, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_press:
+                root.select_file()

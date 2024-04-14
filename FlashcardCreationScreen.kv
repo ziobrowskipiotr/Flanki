@@ -1,0 +1,27 @@
+<FlashcardCreationScreen>:
+    FloatLayout:
+        TextInput:
+            id: front_card
+            hint_text: "Enter front of flashcard"
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+
+        TextInput:
+            id: back_card
+            hint_text: "Enter back of flashcard"
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Button:
+            text: 'Save Flashcard'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_press:
+                root.save_flashcard()
+
+        Button:
+            text: 'Back'
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+            on_press:
+                app.root.current = 'main'

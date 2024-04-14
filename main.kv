@@ -1,3 +1,4 @@
+#:import Window kivy.core.window.Window
 ScreenManager:
     id: screen_manager
 
@@ -39,13 +40,14 @@ ScreenManager:
         Image:
             source: 'logo2.png'
             size_hint: 0.5, 0.5
-            pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.7}
 
         MyButton:
             text: 'My flashcards'
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.4}
             background_color: 0, 0, 0, 0
+            font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
                     rgba: 156/255, 235/255, 189/255, 1
@@ -55,11 +57,12 @@ ScreenManager:
                     radius: [self.height / 2.2, ]
             on_release: app.change_screen('my_flashcards')
 
-        MyButton:
+        Button:
             text: 'Create flashcards'
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.2935}
             background_color: 0, 0, 0, 0
+            font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
                     rgba: 173/255, 216/255, 230/255, 1
@@ -74,6 +77,7 @@ ScreenManager:
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.187}
             background_color: 0, 0, 0, 0
+            font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
                     rgba: 255/255, 105/255, 180/255, 1
@@ -84,10 +88,11 @@ ScreenManager:
             on_release: app.change_screen('import_flashcards')
 
         MyButton:
-            text: 'Statistics'
+            text: 'Edit Flashcards'
             size_hint: 0.6, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.0805}
             background_color: 0, 0, 0, 0
+            font_size: min(self.height * 0.5, self.width * 0.11)
             canvas.before:
                 Color:
                     rgba: 147/255, 112/255, 219/255, 1
@@ -97,85 +102,40 @@ ScreenManager:
                     radius: [self.height / 2.2, ]
             on_release: app.change_screen('statistics')
 
-        Button:
-            id: btn
-            text: 'Menu'
-            size_hint: 0.2, None
-            height: dp(30)
-            pos_hint: {'x': 0, 'top': 1}
-            background_color: 0, 0, 0, 0
-            canvas.before:
-                Color:
-                    rgba: 0.4, 0.4, 0.4, 1
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [self.height / 4, ]
-            on_release: dropdown.open(self)
+        BoxLayout:
+            id: top_bar
+            size_hint_y: None
+            height: Window.height * 0.08
+            pos_hint: {'top': 1}
 
-        DropDown:
-            id: dropdown
             Button:
-                text: 'My Account'
-                background_color: 0, 0, 0, 0
-                size_hint: 0.2, None
-                height: dp(30)
-                canvas.before:
-                    Color:
-                        rgba: 0.4, 0.4, 0.4, 1
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 4, ]
-                on_release:
-                    app.change_screen('moje_konto')
-                    dropdown.dismiss()
+                text: 'Account'
+                background_color: 0.8, 0.88, 0.7, 1
+                size_hint: 0.28, None
+                height: top_bar.height
+                font_size: min(self.height * 0.5, self.width * 0.23)
+                on_release: app.change_screen('moje_konto')
+
             Button:
                 text: 'Help'
-                size_hint: 0.2, None
-                height: dp(30)
-                background_color: 0, 0, 0, 0
-                canvas.before:
-                    Color:
-                        rgba: 0.4, 0.4, 0.4, 1
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 4, ]
-                on_release:
-                    app.open_help_window()
-                    dropdown.dismiss()
+                background_color: 0.22, 0.8, 0.8, 1
+                size_hint: 0.28, None
+                height: top_bar.height
+                font_size: min(self.height * 0.5, self.width * 0.23)
+                on_release: app.open_help_window()
+
             Button:
                 text: 'Log Out'
-                size_hint: 0.2, None
-                height: dp(30)
-                background_color: 0, 0, 0, 0
-                canvas.before:
-                    Color:
-                        rgba: 0.4, 0.4, 0.4, 1
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 4, ]
-                on_release:
-                    app.change_screen('login')
-                    dropdown.dismiss()
+                background_color: 0.82, 0.1, 0.26, 1
+                size_hint: 0.28, None
+                height: top_bar.height
+                font_size: min(self.height * 0.5, self.width * 0.23)
+                on_release: app.change_screen('login')
 
             Button:
                 text: 'Exit'
-                size_hint: 0.2, None
-                height: dp(30)
-                background_color: 0, 0, 0, 0
-                canvas.before:
-                    Color:
-                        rgba: 0.4, 0.4, 0.4, 1
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [self.height / 4, ]
-                on_release:
-                    app.quit_app()
-                    dropdown.dismiss()
-
-        Widget:
-            on_parent: dropdown.dismiss()
+                background_color: 0.4, 0.4, 0.4, 1
+                size_hint: 0.28, None
+                height: top_bar.height
+                font_size: min(self.height * 0.5, self.width * 0.23)
+                on_release: app.quit_app()

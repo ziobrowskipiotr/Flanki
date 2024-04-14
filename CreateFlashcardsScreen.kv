@@ -2,29 +2,37 @@
     FloatLayout:
         Video:
             id: video
-            source: 'galactic.avi'
+            source: 'dym.mp4'
+            state: 'play'
             options: {'eos': 'loop'}
             allow_stretch: True
             keep_ratio: False
             size_hint: 1, 1
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-        Button:
-            id: btn
-            text: 'Home'
-            size_hint: 0.2, None
-            height: dp(30)
-            pos_hint: {'x': 0, 'top': 1}
-            background_color: 0, 0, 0, 0
-            canvas.before:
-                Color:
-                    rgba: 0.4, 0.4, 0.4, 1
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [self.height / 4, ]
-            on_release: app.change_screen('main')
 
-        Label:
-            text: 'Tu będzie ekran MyFlashcardsScreen'
-            size_hint: 0.6, 0.2
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.568, 0.568
+            pos_hint: {'center_x': 0.5, 'center_y': 0.825}
+
+        Button:
+            text: 'Back'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            on_release:
+                app.change_screen('main')
+
+        TextInput:
+            id: folder_name_input
+            hint_text: "Enter new folder name"
+            size_hint: 0.7, 0.07
+            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            multiline: False
+
+        Button:
+            text: 'Create Folder'
+            size_hint: 0.7, 0.07
+            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            on_press:
+                root.create_new_flashcard_folder()
