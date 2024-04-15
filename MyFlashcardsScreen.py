@@ -1,5 +1,7 @@
 import boto3
 from kivy.app import App
+from kivy.core.window import Window
+from kivy.graphics import Color, RoundedRectangle
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
@@ -7,11 +9,17 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from openpyxl import load_workbook
 from io import BytesIO
+
+from MyButton import MyButton
 from S3_access_key import S3_key as Key
 from kivy.uix.screenmanager import Screen
+
+
 class MyFlashcardsScreen(Screen):
+
     def on_pre_enter(self):
         self.load_folders()
+        self.start_video()
 
     def load_folders(self):
         app = App.get_running_app()
@@ -31,7 +39,20 @@ class MyFlashcardsScreen(Screen):
         if folders:
             for folder in folders:
                 folder_name = folder.get('Prefix')[len(prefix):-1]
-                btn = Button(text=folder_name, size_hint_y=None, height=40)
+                btn = MyButton(
+                    text=folder_name,
+                    size_hint_y=None,
+                    height=40,  # Możesz dostosować wysokość przycisku
+                    size_hint_x=None,
+                    width=Window.width * 0.8,  # Ustaw szerokość przycisku na 80% szerokości okna
+                    background_normal='',  # Usuń domyślny obrazek tła
+                    background_color=(0.2, 0.2, 0.2, 1),  # Ustaw kolor tła (przykładowo szary)
+                )
+                # Dodajemy kontekst graficzny za pomocą with
+                with btn.canvas.before:
+                    Color(0.2, 0.2, 0.2, 1)  # Kolor tła przed narysowaniem przycisku
+                    RoundedRectangle(pos=btn.pos, size=btn.size, radius=[10])
+
                 btn.bind(on_release=lambda x, folder=folder_name: self.show_flashcards(folder))
                 self.ids.folders_box.add_widget(btn)
         else:
@@ -92,3 +113,12 @@ class MyFlashcardsScreen(Screen):
         close_btn.bind(on_press=popup.dismiss)
 
         popup.open()
+
+    def on_leave(self):
+        self.stop_video()
+
+    def start_video(self):
+        self.ids.video.state = 'play'
+
+    def stop_video(self):
+        self.ids.video.state = 'stop'

@@ -1,16 +1,43 @@
 <MyFlashcardsScreen>:
-    BoxLayout:
-        orientation: 'vertical'
 
-        Button:
-            text: 'Back'
-            size_hint_y: None
-            height: dp(50)
-            on_release: app.change_screen('main')
+    FloatLayout:
+
+        Video:
+            id: video
+            source: 'galactic.avi'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MyButton:
+            text: 'Home'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: self.bgc_homeback
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_press: self.bgc_homeback = self.background_down_color
+            on_release:
+                self.bgc_homeback = [0.4, 0.4, 0.4, 1]
+                app.change_screen('main')
 
         ScrollView:
+            size_hint: None, None
+            size: root.width * 0.8, root.height * 0.6 # szerokość i wysokość ScrollView jako procenty rozmiaru rodzica
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5} # wyśrodkowanie ScrollView
+
             BoxLayout:
                 id: folders_box
                 orientation: 'vertical'
                 size_hint_y: None
                 height: self.minimum_height
+                width: self.parent.width # szerokość BoxLayout równa szerokości ScrollView

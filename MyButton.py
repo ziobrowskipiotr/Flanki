@@ -11,4 +11,8 @@ class MyButton(Button):
     bgc_import = ListProperty([255/255, 105/255, 180/255, 1])
     bgc_my = ListProperty([156/255, 235/255, 189/255, 1])
     bgc_edit = ListProperty([147/255, 112/255, 219/255, 1])
-    background_down_color = ListProperty(darken_color([173/255, 216/255, 230/255, 1], 0.5))  # Tutaj ciemniejszy o 50%
+    bgc_import_f = ListProperty([0.25, 0.4, 0.8, 1])
+    bgc_homeback = ListProperty([0.4, 0.4, 0.4, 1])
+    bgc_create_folder = ListProperty([0.25, 0.4, 0.8, 1])
+    bgc_create_flash = ListProperty([0.25, 0.4, 0.8, 1])
+    background_down_color = ListProperty(darken_color([173/255, 216/255, 230/255, 1], 0.75))  # Tutaj ciemniejszy o 50%

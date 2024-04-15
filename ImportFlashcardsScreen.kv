@@ -33,7 +33,7 @@
             font_size: min(Window.height * 0.08, Window.width * 0.08)
             bold: True  # Pogrubia tekst
 
-        Button:
+        MyButton:
             text: 'Home'
             size_hint: 0.28, None
             height: Window.height * 0.08
@@ -41,26 +41,32 @@
             background_color: 0, 0, 0, 0
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1
+                    rgba: self.bgc_homeback
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 4, ]
-            on_release: app.change_screen('main')
+            on_press: self.bgc_homeback = self.background_down_color
+            on_release:
+                self.bgc_homeback = [0.4, 0.4, 0.4, 1]
+                app.change_screen('main')
 
-        Button:
+        MyButton:
             text: 'Import'
             size_hint: 0.2, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.38}
             size_hint: 0.58, None
+            font_size: min(self.height * 0.4, self.width * 0.09)
             height: Window.height * 0.1
             background_color: 0, 0, 0, 0
             canvas.before:
                 Color:
-                    rgba: 0.25, 0.4, 0.8, 1
+                    rgba: self.bgc_import_f
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
-                    radius: [self.height / 4, ]
-            on_press:
+                    radius: [self.height / 2.2, ]
+            on_press: self.bgc_import_f = self.background_down_color
+            on_release:
+                self.bgc_import_f = [0.25, 0.4, 0.8, 1]
                 root.select_file()

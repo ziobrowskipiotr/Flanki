@@ -2,7 +2,7 @@
     FloatLayout:
         Video:
             id: video
-            source: 'dym.mp4'
+            source: 'galactic.avi'
             state: 'play'
             options: {'eos': 'loop'}
             allow_stretch: True
@@ -15,8 +15,7 @@
             size_hint: 0.568, 0.568
             pos_hint: {'center_x': 0.5, 'center_y': 0.825}
 
-        Button:
-            id: btn
+        MyButton:
             text: 'Back'
             size_hint: 0.28, None
             height: Window.height * 0.08
@@ -24,12 +23,15 @@
             background_color: 0, 0, 0, 0
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1
+                    rgba: self.bgc_homeback
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 4, ]
-            on_release: app.change_screen('create_flashcards')
+            on_press: self.bgc_homeback = self.background_down_color
+            on_release:
+                self.bgc_homeback = [0.4, 0.4, 0.4, 1]
+                app.change_screen('create_flashcards')
 
 
         TextInput:
@@ -72,18 +74,21 @@
                     pos: self.pos
                     radius: 20,
 
-        Button:
+        MyButton:
             text: 'Save Flashcard'
-            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
             size_hint: 0.58, None
+            font_size: min(self.height * 0.52, self.width * 0.15)
             height: Window.height * 0.08
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
             background_color: 0, 0, 0, 0
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1
+                    rgba: self.bgc_create_flash
                 RoundedRectangle:
                     size: self.size
                     pos: self.pos
                     radius: [self.height / 4, ]
-            on_press:
+            on_press: self.bgc_create_flash = self.background_down_color
+            on_release:
                 root.save_flashcard()
+                self.bgc_create_flash = [0.25, 0.4, 0.8, 1]
