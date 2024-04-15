@@ -1,39 +1,62 @@
+#:import Window kivy.core.window.Window
 <EditFlashcardsScreen>:
-    BoxLayout:
-        orientation: 'vertical'
+    FloatLayout:
+        Video:
+            id: video
+            source: 'galactic.avi'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-        Button:
-            text: 'Back'
-            size_hint_y: None
-            height: 50
-            on_release: root.manager.current = 'main'
+        MyButton:
+            text: 'Home'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: self.bgc_homeback
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_press: self.bgc_homeback = self.background_down_color
+            on_release:
+                self.bgc_homeback = [0.4, 0.4, 0.4, 1]
+                app.change_screen('main')
 
-        Label:
-            text: 'Select a Folder:'
-            size_hint_y: None
-            height: 50
+        BoxLayout:
+            orientation: 'vertical'
 
-        ScrollView:
-            GridLayout:
-                id: folders_box
-                cols: 1
+            Label:
+                text: 'Select a Folder:'
+                font_size: min(self.height * 0.35, self.width * 0.35)
                 size_hint_y: None
-                height: self.minimum_height
+                height: Window.height * 0.1
 
-        Label:
-            text: 'Select a Flashcard:'
-            size_hint_y: None
-            height: 50
+            ScrollView:
+                GridLayout:
+                    height: Window.height * 0.1
+                    id: folders_box
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
 
-        ScrollView:
-            GridLayout:
-                id: files_box
-                cols: 1
+            Label:
+                text: 'Select a Flashcard:'
+                font_size: min(self.height * 0.35, self.width * 0.35)
                 size_hint_y: None
-                height: self.minimum_height
+                height: Window.height * 0.1
 
-        Button:
-            text: 'Save Changes to S3'
-            size_hint_y: None
-            height: 50
-            on_release: root.save_changes()
+            ScrollView:
+                GridLayout:
+                    height: Window.height * 0.1
+                    id: files_box  # Zmienione id na unikalne dla tego kontenera
+                    cols: 1
+                    size_hint_y: None
+                    height: dp(100)  # Tutaj używamy 'dp' do określenia stałej wysokości
+
