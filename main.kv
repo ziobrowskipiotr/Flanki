@@ -22,9 +22,9 @@ ScreenManager:
         name: 'import_flashcards'
         id: import_flashcards_screen
 
-    StatisticsScreen:
-        name: 'statistics'
-        id: statistics_screen
+    EditFlashcardsScreen
+        name: 'edit_flashcards'
+        id: edit_flashcards_screen
 
 <MainScreen>:
     FloatLayout:
@@ -113,7 +113,7 @@ ScreenManager:
             on_press: self.bgc_edit = self.background_down_color
             on_release:
                 self.bgc_edit = [147/255, 112/255, 219/255, 1]
-                app.change_screen('statistics')
+                app.change_screen('edit_flashcards')
 
         BoxLayout:
             id: top_bar

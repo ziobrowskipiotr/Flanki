@@ -1,0 +1,39 @@
+<EditFlashcardsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Button:
+            text: 'Back'
+            size_hint_y: None
+            height: 50
+            on_release: root.manager.current = 'main'
+
+        Label:
+            text: 'Select a Folder:'
+            size_hint_y: None
+            height: 50
+
+        ScrollView:
+            GridLayout:
+                id: folders_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+        Label:
+            text: 'Select a Flashcard:'
+            size_hint_y: None
+            height: 50
+
+        ScrollView:
+            GridLayout:
+                id: files_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+        Button:
+            text: 'Save Changes to S3'
+            size_hint_y: None
+            height: 50
+            on_release: root.save_changes()

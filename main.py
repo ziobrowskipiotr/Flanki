@@ -23,7 +23,7 @@ from CreateFlashcardsScreen import CreateFlashcardsScreen
 from ImportFlashcardsScreen import ImportFlashcardsScreen
 from MojeKontoScreen import MojeKontoScreen
 from MyFlashcardsScreen import MyFlashcardsScreen
-from StatisticsScreen import StatisticsScreen
+from EditFlashcardsScreen import EditFlashcardsScreen
 from MainScreen import MainScreen
 from cognito_auth import login_user, register_user
 from LoginScreen import LoginScreen
@@ -60,7 +60,7 @@ class MainApp(MDApp):
         Builder.load_file('MyFlashcardsScreen.kv')
         Builder.load_file('CreateFlashcardsScreen.kv')
         Builder.load_file('ImportFlashcardsScreen.kv')
-        Builder.load_file('StatisticsScreen.kv')
+        Builder.load_file('EditFlashcardsScreen.kv')
         Builder.load_file('FlashcardCreationScreen.kv')
 
         sm = ScreenManager()
@@ -72,7 +72,7 @@ class MainApp(MDApp):
         sm.add_widget(MyFlashcardsScreen(name='my_flashcards'))
         sm.add_widget(CreateFlashcardsScreen(name='create_flashcards'))
         sm.add_widget(ImportFlashcardsScreen(name='import_flashcards'))
-        sm.add_widget(StatisticsScreen(name='statistics'))
+        sm.add_widget(EditFlashcardsScreen(name='edit_flashcards'))
         sm.add_widget(MyFlashcardsScreen(name='my_flashcards'))
         sm.add_widget(FlashcardCreationScreen(name='flashcards_creation'))
 
