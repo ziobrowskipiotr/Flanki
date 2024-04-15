@@ -16,26 +16,53 @@
             pos_hint: {'center_x': 0.5, 'center_y': 0.825}
 
         Button:
-            text: 'Back'
+            id: btn
+            text: 'Home'
             size_hint: 0.28, None
             height: Window.height * 0.08
             pos_hint: {'x': 0, 'top': 1}
-            on_release:
-                app.change_screen('main')
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('main')
 
         TextInput:
             id: folder_name_input
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: "Enter new folder name"
-            size_hint: 0.7, 0.07
-            pos_hint: {'center_x': 0.5, 'center_y': 0.55}
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
             multiline: False
+            size_hint: 0.58 ,0.08
+            pos_hint: {'center_x':0.5, 'center_y':0.55}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         Button:
             text: 'Create Folder'
-            size_hint: 0.7, 0.07
-            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.20}
+            size_hint: 0.58, None
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_press:
                 root.create_new_flashcard_folder()
-
-
-

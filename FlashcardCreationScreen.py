@@ -33,3 +33,15 @@ class FlashcardCreationScreen(Screen):
             # Użycie ExcelWriter do zapisu DataFrame bez nagłówków kolumn
             with pd.ExcelWriter(f, engine='openpyxl') as writer:
                 df.to_excel(writer, index=False, header=False)
+
+    def on_pre_enter(self):
+        self.start_video()
+
+    def on_leave(self):
+        self.stop_video()
+
+    def start_video(self):
+        self.ids.video.state = 'play'
+
+    def stop_video(self):
+        self.ids.video.state = 'stop'

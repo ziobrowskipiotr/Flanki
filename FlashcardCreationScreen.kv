@@ -1,27 +1,89 @@
 <FlashcardCreationScreen>:
     FloatLayout:
+        Video:
+            id: video
+            source: 'dym.mp4'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Image:
+            source: 'logo2.png'
+            size_hint: 0.568, 0.568
+            pos_hint: {'center_x': 0.5, 'center_y': 0.825}
+
+        Button:
+            id: btn
+            text: 'Back'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_release: app.change_screen('create_flashcards')
+
+
         TextInput:
             id: front_card
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: "Enter front of flashcard"
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.09
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: back_card
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: "Enter back of flashcard"
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.09
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         Button:
             text: 'Save Flashcard'
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            size_hint: 0.58, None
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_press:
                 root.save_flashcard()
-
-        Button:
-            text: 'Back'
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.2}
-            on_press:
-                app.root.current = 'main'

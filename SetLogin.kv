@@ -19,9 +19,9 @@
 
         Button:
             id: btn
-            text: 'Back'
-            size_hint: 0.2, None
-            height: dp(30)
+            text: 'Home'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
             pos_hint: {'x': 0, 'top': 1}
             background_color: 0, 0, 0, 0
             canvas.before:
@@ -35,19 +35,56 @@
 
         TextInput:
             id: new_login
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: 'Enter your login'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.46}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: new_password
+            password: True
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
+            hint_text: 'Enter the password'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
             size_hint: 0.8, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.35}
-            hint_text: 'Enter the password'
-            password: True
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         Button:
             text: 'Set login and password'
-            size_hint: 0.8, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+            size_hint: 0.58, None
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_release: app.setlogpass(new_login.text, new_password.text)
