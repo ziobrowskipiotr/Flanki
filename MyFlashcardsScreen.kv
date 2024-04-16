@@ -30,14 +30,20 @@
                 self.bgc_homeback = [0.4, 0.4, 0.4, 1]
                 app.change_screen('main')
 
-        ScrollView:
-            size_hint: None, None
-            size: root.width * 0.8, root.height * 0.6 # szerokość i wysokość ScrollView jako procenty rozmiaru rodzica
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5} # wyśrodkowanie ScrollView
 
-            BoxLayout:
-                id: folders_box
-                orientation: 'vertical'
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: ''
+                font_size: min(self.height * 0.35, self.width * 0.35)
                 size_hint_y: None
-                height: self.minimum_height
-                width: self.parent.width # szerokość BoxLayout równa szerokości ScrollView
+                height: Window.height * 0.1
+
+            ScrollView:
+                GridLayout:
+                    height: Window.height * 0.1
+                    id: folders_box
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height

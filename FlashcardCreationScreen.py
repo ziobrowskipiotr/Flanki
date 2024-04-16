@@ -15,7 +15,7 @@ class FlashcardCreationScreen(Screen):
         # Utworzenie DataFrame bez nagłówków kolumn
         df = pd.DataFrame([[front_text, back_text]])
 
-        filename = f"{front_text}.xlsx"
+        filename = f"{front_text}-{back_text}.xlsx"
         s3_path = f"s3://{Key.bucket_name}/{App.get_running_app().current_folder}{filename}"
 
         self.write_df_to_excel_s3(df, s3_path)

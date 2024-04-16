@@ -16,6 +16,8 @@ from kivy.core.window import Window
 from kivy.uix.textinput import TextInput
 from openpyxl import load_workbook
 from io import BytesIO
+
+from RoundedTextInput import RoundedTextInput
 from S3_access_key import S3_key as Key
 
 class EditFlashcardsScreen(Screen):
@@ -66,10 +68,10 @@ class EditFlashcardsScreen(Screen):
         self.ids.files_box.clear_widgets()
         for file_key in sorted(flashcards):
             base_name = os.path.basename(file_key)
-            file_index = int(base_name.split('.')[0])
-            formatted_name = f"{file_index:03}.xlsx"
+            file_index = base_name.split('.')[0]
+            formatted_name = f"{file_index}.xlsx"
             seed()
-            btn = Button(text=formatted_name, size_hint_y=None, height=Window.height * 0.07, font_size=Window.height * 0.04, background_color= (0.678, 0.847, 0.902, 0.6) if file_index % 2 == 0 else (1, 0.8, 0.9, 0.6))
+            btn = Button(text=formatted_name, size_hint_y=None, height=Window.height * 0.07, font_size=Window.height * 0.04, background_color= (0.678, 0.847, 0.902, 0.6))
             btn.bind(on_release=lambda x, fk=f"s3://{bucket_name}/{file_key}": self.edit_flashcard(fk))
             self.ids.files_box.add_widget(btn)
 
@@ -146,18 +148,17 @@ class EditFlashcardsScreen(Screen):
 
     def show_edit_popup(self, data, path):
         content = BoxLayout(orientation='vertical', spacing=5, padding=5)
-        input1 = TextInput(text=str(data['cell1']), multiline=False)
-        input2 = TextInput(text=str(data['cell2']), multiline=False)
+        input1 = RoundedTextInput(text=str(data['cell1']), multiline=False, hint_text_color=[1,1,1,1], foreground_color=[1,1,1,1], background_color=[0,0,0,0], background_image= "", background_normal= "", background_active= "", size_hint= (0.8 ,0.12), pos_hint= {'center_x':0.5, 'center_y':0.5}, )
+        input2 = RoundedTextInput(text=str(data['cell2']), multiline=False, hint_text_color=[1,1,1,1], foreground_color=[1,1,1,1], background_color=[0,0,0,0], background_image= "", background_normal= "", background_active= "", size_hint= (0.8 ,0.12), pos_hint= {'center_x':0.5, 'center_y':0.65}, )
         content.add_widget(input1)
         content.add_widget(input2)
 
-        save_btn = Button(text='Save', size_hint=(1, 0.25))
+        save_btn = Button(text='Save', size_hint=(1, 0.12))
         content.add_widget(save_btn)
 
         # Tutaj ustawiamy size_hint na pewien procent aktualnej szerokości i wysokości okna
-        popup_width = Window.width * 0.8 if Window.width > 300 else 300
-        popup_height = Window.height * 0.5 if Window.height > 200 else 200
-        popup = Popup(title="Edit Cells", content=content, size_hint=(None, None), size=(popup_width, popup_height))
+
+        popup = Popup(title="Edit Cells", content=content, size_hint=(0.8, 0.34))
         save_btn.bind(on_press=lambda x: self.save_edited_data(path, input1.text, input2.text, popup))
         popup.open()
 

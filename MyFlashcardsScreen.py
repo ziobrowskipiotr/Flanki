@@ -39,20 +39,8 @@ class MyFlashcardsScreen(Screen):
         if folders:
             for folder in folders:
                 folder_name = folder.get('Prefix')[len(prefix):-1]
-                btn = MyButton(
-                    text=folder_name,
-                    size_hint_y=None,
-                    height=40,  # Możesz dostosować wysokość przycisku
-                    size_hint_x=None,
-                    width=Window.width * 0.8,  # Ustaw szerokość przycisku na 80% szerokości okna
-                    background_normal='',  # Usuń domyślny obrazek tła
-                    background_color=(0.2, 0.2, 0.2, 1),  # Ustaw kolor tła (przykładowo szary)
-                )
-                # Dodajemy kontekst graficzny za pomocą with
-                with btn.canvas.before:
-                    Color(0.2, 0.2, 0.2, 1)  # Kolor tła przed narysowaniem przycisku
-                    RoundedRectangle(pos=btn.pos, size=btn.size, radius=[10])
-
+                btn = MyButton(text=folder_name, size_hint_y=None, height=Window.height * 0.09,
+                             font_size=Window.height * 0.04, background_color=(0.678, 0.847, 0.902, 0.6))
                 btn.bind(on_release=lambda x, folder=folder_name: self.show_flashcards(folder))
                 self.ids.folders_box.add_widget(btn)
         else:
@@ -71,20 +59,26 @@ class MyFlashcardsScreen(Screen):
         prefix = f"{user_login}/{folder_name}/"
         result = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
 
-        all_cards_content = ""
+        flashcards = []
         if 'Contents' in result:
             for file in result['Contents']:
-                file_name = file['Key'].split('/')[-1]
-                if file_name.endswith('.xlsx'):
+                if file['Key'].endswith('.xlsx'):
                     response = s3.get_object(Bucket=bucket_name, Key=file['Key'])
                     file_content = response['Body'].read()
                     wb = load_workbook(filename=BytesIO(file_content))
                     ws = wb.active
                     for row in ws.iter_rows(values_only=True):
-                        all_cards_content += f"{row[0]} - {row[1]}\n" if len(row) > 1 else f"{row[0]}\n"
+                        flashcard = {
+                            'front': row[0],
+                            'back': row[1],
+                            'progress': row[2] if len(row) > 2 else 0
+                        }
+                        flashcards.append(flashcard)
 
-        if all_cards_content:
-            self.display_cards(all_cards_content)
+        if flashcards:
+            learning_screen = self.manager.get_screen('learning_screen')
+            learning_screen.flashcards = flashcards
+            self.manager.current = 'learning_screen'
         else:
             self.show_popup("Informacja", "W folderze nie ma żadnych fiszek")
 

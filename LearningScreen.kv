@@ -1,0 +1,102 @@
+<LearningScreen>:
+    FloatLayout:
+
+        Video:
+            source: 'galactic.avi'
+            state: 'play'
+            options: {'eos': 'loop'}
+            allow_stretch: True
+            keep_ratio: False
+            size_hint: 1, 1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        MyButton:
+            text: 'Back'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
+            pos_hint: {'x': 0, 'top': 1}
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: self.bgc_homeback
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
+            on_press: self.bgc_homeback = self.background_down_color
+            on_release:
+                self.bgc_homeback = [0.4, 0.4, 0.4, 1]
+                app.change_screen('my_flashcards')
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(6)
+
+
+            Label:
+                id: question
+                text: ''
+                background_color: 0, 0, 0, 0
+                font_size: min(self.height * 0.3, self.width * 0.3)
+                size_hint_y: 0.2
+
+            Label:
+                id: answer
+                text: ''
+                background_color: 0, 0, 0, 0
+                font_size: min(self.height * 0.3, self.width * 0.3)
+                size_hint_y: 0.2
+
+            MyButton:
+                text: 'Show Answer'
+                size_hint: 0.6, 0.1
+                pos_hint: {'center_x': 0.5, 'center_y': 0.0805}
+                background_color: 0, 0, 0, 0
+                font_size: min(self.height * 0.4, self.width * 0.09)
+                canvas.before:
+                    Color:
+                        rgba: self.bgc_edit
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 2.2, ]
+                on_press: self.bgc_edit = self.background_down_color
+                on_release:
+                    self.bgc_edit = [147/255, 112/255, 219/255, 1]
+                    root.show_answer()
+
+            MyButton:
+                text: 'Correct'
+                size_hint: 0.6, 0.1
+                pos_hint: {'center_x': 0.5, 'center_y': 0.1805}
+                background_color: 0, 0, 0, 0
+                font_size: min(self.height * 0.4, self.width * 0.09)
+                canvas.before:
+                    Color:
+                        rgba: self.bgc_import
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 2.2, ]
+                on_press: self.bgc_import = self.background_down_color
+                on_release:
+                    self.bgc_import = [255/255, 105/255, 180/255, 1]
+                    root.correct_answer()
+
+            MyButton:
+                text: 'Wrong'
+                size_hint: 0.6, 0.1
+                pos_hint: {'center_x': 0.5, 'center_y': 0.2805}
+                background_color: 0, 0, 0, 0
+                font_size: min(self.height * 0.4, self.width * 0.09)
+                canvas.before:
+                    Color:
+                        rgba: self.bgc_create
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [self.height / 2.2, ]
+                on_press: self.bgc_create = self.background_down_color
+                on_release:
+                    self.bgc_create = [173/255, 216/255, 230/255, 1]
+                    root.wrong_answer()

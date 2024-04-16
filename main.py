@@ -18,6 +18,8 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivymd.app import MDApp
 from openpyxl.workbook import Workbook
+
+from LearningScreen import LearningScreen
 from MyButton import MyButton
 from CreateFlashcardsScreen import CreateFlashcardsScreen
 from ImportFlashcardsScreen import ImportFlashcardsScreen
@@ -62,6 +64,8 @@ class MainApp(MDApp):
         Builder.load_file('ImportFlashcardsScreen.kv')
         Builder.load_file('EditFlashcardsScreen.kv')
         Builder.load_file('FlashcardCreationScreen.kv')
+        Builder.load_file('LearningScreen.kv')
+
 
         sm = ScreenManager()
         sm.add_widget(LoginScreen(name='login'))
@@ -75,6 +79,8 @@ class MainApp(MDApp):
         sm.add_widget(EditFlashcardsScreen(name='edit_flashcards'))
         sm.add_widget(MyFlashcardsScreen(name='my_flashcards'))
         sm.add_widget(FlashcardCreationScreen(name='flashcards_creation'))
+        sm.add_widget(LearningScreen(name='learning_screen'))
+
 
 
         return sm
