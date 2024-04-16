@@ -4,7 +4,7 @@ from kivy.properties import ListProperty
 
 def darken_color(color, amount=0.8):
     """ Zmniejsza jasność koloru o podany procent (domyślnie o 20%). """
-    return [max(0, c * amount) for c in color[:-1]] + [color[-1]]  # Nie zmieniaj alfa
+    return [max(0, c * amount) for c in color[:-1]] + [color[-1]]
 
 class MyButton(Button):
     bgc_create = ListProperty([173/255, 216/255, 230/255, 1])

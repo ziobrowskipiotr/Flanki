@@ -5,6 +5,8 @@ from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from S3_access_key import S3_key as Key
 from botocore.exceptions import NoCredentialsError, ClientError
+
+
 class CreateFlashcardsScreen(Screen):
     def create_new_flashcard_folder(self):
         app = App.get_running_app()
@@ -36,7 +38,6 @@ class CreateFlashcardsScreen(Screen):
 
         app.root.current = 'flashcards_creation'
         app.current_folder = directory_name
-
 
     def on_pre_enter(self):
         self.start_video()

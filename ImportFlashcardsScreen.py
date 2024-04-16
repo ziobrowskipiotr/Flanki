@@ -42,8 +42,11 @@ class ImportFlashcardsScreen(Screen, Widget):
             app = App.get_running_app()
             user_folder = f"{app.login}/"
 
-            df = pd.read_excel(self.selected_file, header=None)
+            # Now, get the base file name without extension to create a new folder name
+            base_filename = os.path.splitext(os.path.basename(self.selected_file))[0]
+            new_folder_path = f"{user_folder}{base_filename}/"  # Create a path for new folder in S3
 
+            df = pd.read_excel(self.selected_file, header=None)
             if df.shape[1] < 2:
                 print("Error: The file does not have enough columns.")
                 return
@@ -51,7 +54,7 @@ class ImportFlashcardsScreen(Screen, Widget):
             for index, row in df.iterrows():
                 front, back = row[0], row[1]
                 filename = f"{clean_filename(front)}-{clean_filename(back)}.xlsx"
-                s3_path = f"s3://{Key.bucket_name}/{user_folder}{filename}"
+                s3_path = f"s3://{Key.bucket_name}/{new_folder_path}{filename}"
                 df_flashcard = pd.DataFrame([[front, back]])
                 self.write_df_to_excel_s3(df_flashcard, s3_path)
         else:
