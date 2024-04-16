@@ -19,25 +19,71 @@
 
         TextInput:
             id: login
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
+            hint_text: 'Login'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
             size_hint: 0.8, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            hint_text: 'Login'
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: password
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-            hint_text: 'Password'
             password: True
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
+            hint_text: 'Password'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.39}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         Button:
             text: 'Login'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.26}
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_release: app.verify_credentials(login.text, password.text)
 
         Button:
             text: 'Register'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.15}
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_release: app.change_screen('registration')

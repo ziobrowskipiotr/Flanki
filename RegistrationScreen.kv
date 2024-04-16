@@ -21,9 +21,9 @@
 
         Button:
             id: btn
-            text: 'Back'
-            size_hint: 0.2, None
-            height: dp(30)
+            text: 'Home'
+            size_hint: 0.28, None
+            height: Window.height * 0.08
             pos_hint: {'x': 0, 'top': 1}
             background_color: 0, 0, 0, 0
             canvas.before:
@@ -37,30 +37,95 @@
 
         TextInput:
             id: first_name
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
+            hint_text: 'Name'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
             size_hint: 0.8, 0.1
             pos_hint: {'center_x': 0.5, 'center_y': 0.52}
-            hint_text: 'Name'
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: last_name
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.42}
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: 'Surname'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.41}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: email
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.32}
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: 'Email'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.30}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         TextInput:
             id: phone_number
-            size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.22}
+            hint_text_color: [1,1,1,1]
+            foreground_color: [1,1,1,1]
             hint_text: 'Phone number'
+            background_color: [0,0,0,0]
+            background_image: ""
+            background_normal: ""
+            background_active: ""
+            multiline: False
+            size_hint: 0.8, 0.1
+            pos_hint: {'center_x': 0.5, 'center_y': 0.19}
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,0.5
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: 20,
 
         Button:
             text: 'Next'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.08}
             size_hint: 0.8, 0.1
-            pos_hint: {'center_x': 0.5, 'center_y': 0.12}
+            height: Window.height * 0.08
+            background_color: 0, 0, 0, 0
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [self.height / 4, ]
             on_release: app.register(first_name.text, last_name.text, email.text, phone_number.text)
